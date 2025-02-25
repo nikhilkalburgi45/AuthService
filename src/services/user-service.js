@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const UserRepository = require("../repository/user-repository");
 const { JWT_KEY } = require("../config/ServerConfig ");
-
+const bcrypt = require("bcrypt");
 class UserService {
   constructor() {
     this.userRepository = new UserRepository();
@@ -26,7 +26,7 @@ class UserService {
     }
   }
 
-  verifyToken(user) {
+  verifyToken(token) {
     try {
       const response = jwt.verify(token, JWT_KEY);
       return response;
