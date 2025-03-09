@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const UserRepository = require("../repository/user-repository");
-const { JWT_KEY } = require("../config/ServerConfig ");
+const { JWT_KEY } = require("../config/ServerConfig");
 const bcrypt = require("bcrypt");
 
 class UserService {
@@ -13,15 +13,16 @@ class UserService {
       const user = await this.userRepository.create(data);
       return user;
     } catch (error) {
-      console.log("Something went wrong on repo layer");
+      console.error("Something went wrong in the repository layer:", error);
       throw error;
     }
   }
 
   async signIn(email, plainpassword) {
     try {
-      // step 1 -> fecth the user using email
+      // Step 1 -> Fetch the user using email
       const user = await this.userRepository.getByEmail(email);
+      
       // step 2 -> compare incomeing plain password with stored encrypted password
       const passwordMatch = this.checkPassword(plainpassword, user.password);
       if (!passwordMatch) {
@@ -29,30 +30,31 @@ class UserService {
         throw { error: "Incorrect password" };
       }
 
-      // step3 -> if password match create a jwt token and sent it to the user
+      // Step 3 -> If password matches, create a JWT token and return it
       const newJwt = this.createToken({ email: user.email, id: user.id });
       return newJwt;
+
     } catch (error) {
-      console.log("Something went wrong on sign in process");
+      console.error("Something went wrong during the sign-in process:", error);
       throw error;
     }
   }
 
   createToken(user) {
     try {
-      const result = jwt.sign(user, JWT_KEY, { expiresIn: "1h" });
-      return result;
+      return jwt.sign(user, JWT_KEY, { expiresIn: "1h" });
     } catch (error) {
-      console.log("Something went wrong while creating token");
+      console.error("Error creating JWT token:", error);
+      throw error;
     }
   }
 
   verifyToken(token) {
     try {
-      const response = jwt.verify(token, JWT_KEY);
-      return response;
+      return jwt.verify(token, JWT_KEY);
     } catch (error) {
-      console.log("Something went wrong while token valideation", error);
+      console.error("Something went wrong while validating token:", error);
+      throw error;
     }
   }
 
@@ -60,8 +62,10 @@ class UserService {
     try {
       return bcrypt.compareSync(userInputPlainPassword, encryptedPassword);
     } catch (error) {
-      console.log("Something went wrong while token valideation", error);
+      console.error("Something went wrong while checking password:", error);
+      throw error;
     }
   }
 }
+
 module.exports = UserService;
