@@ -56,60 +56,67 @@ CREATE TABLE Users (
 ## 📡 API Endpoints
 
 ### Base URL
+
 ```
 http://localhost:3000/api/v1
 ```
 
 ### User Registration
+
 ```http
 POST /signup
 ```
 
 **Request Body:**
+
 ```json
 {
-    "email": "user@example.com",
-    "password": "securepassword"
+  "email": "user@example.com",
+  "password": "securepassword"
 }
 ```
 
 **Response:**
+
 ```json
 {
-    "message": "Successfully created a new user",
-    "success": true,
-    "error": {},
-    "data": {
-        "id": 1,
-        "email": "user@example.com",
-        "createdAt": "2024-01-01T00:00:00.000Z",
-        "updatedAt": "2024-01-01T00:00:00.000Z"
-    }
+  "message": "Successfully created a new user",
+  "success": true,
+  "error": {},
+  "data": {
+    "id": 1,
+    "email": "user@example.com",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
 }
 ```
 
 ### User Login
+
 ```http
 POST /signin
 ```
 
 **Request Body:**
+
 ```json
 {
-    "email": "user@example.com",
-    "password": "securepassword"
+  "email": "user@example.com",
+  "password": "securepassword"
 }
 ```
 
 **Response:**
+
 ```json
 {
-    "message": "Successfully logged in",
-    "success": true,
-    "error": {},
-    "data": {
-        "token": "jwt_token_here"
-    }
+  "message": "Successfully logged in",
+  "success": true,
+  "error": {},
+  "data": {
+    "token": "jwt_token_here"
+  }
 }
 ```
 
@@ -148,28 +155,56 @@ src/
 
 ## 🚀 Getting Started
 
+### Using Docker (Recommended)
+
 1. Clone the repository
+
+```bash
+git clone https://github.com/nikhilkalburgi45/AuthService.git
+cd AuthService
+```
+
+2. Build the Docker image
+
+```bash
+docker build -t auth-service .
+```
+
+3. Run the container
+
+```bash
+docker run -p 3000:3000 --env-file .env auth-service
+```
+
+### Local Development
+
+1. Clone the repository
+
 ```bash
 git clone https://github.com/nikhilkalburgi45/AuthService.git
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables
+
 ```bash
 cp .env.example .env
 # Edit .env with your configuration
 ```
 
 4. Run migrations
+
 ```bash
 npx sequelize-cli db:migrate
 ```
 
 5. Start the server
+
 ```bash
 npm start
 ```
@@ -177,6 +212,7 @@ npm start
 ## 🔄 Service Integration
 
 This service integrates with other airline management services:
+
 - **Booking Service:** Provides user authentication for booking operations
 - **Flight Service:** Validates user tokens for flight management
 - **Reminder Service:** Authenticates users for notification services
